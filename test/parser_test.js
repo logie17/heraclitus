@@ -31,5 +31,18 @@ LET FOOBAR = 818181
         testLetStmt(stmt, t);
       });
     });
+    it('should identify parse errors', function() {
+      const input = `
+LET = 5
+`;
+      const lexer = new Lexer(input);
+      const parser = new Parser(lexer);
+
+      const program = parser.parseProgram();
+      assert.notEqual(program, null);
+      assert.equal(0, program.statements.length);
+      assert.equal(parser.errors[0], 'expected next token to be IDENT, got =');
+
+    });
   });
 });
