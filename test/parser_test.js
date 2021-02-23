@@ -5,8 +5,7 @@ const {Parser} = require('../lib/parser.js');
 describe('Parser tests', function() {
   describe('test let statements', function() {
     it('should parse let statements', function() {
-      const input = `
-LET x = 5
+      const input = `LET x = 5
 LET y = 10
 LET FOOBAR = 818181
 `;
@@ -30,7 +29,32 @@ LET FOOBAR = 818181
         const stmt = program.statements[i];
         testLetStmt(stmt, t);
       });
+
     });
+
+    it('should parse identifiers', function() {
+      const input = `FOOBAR
+`;
+      const lexer = new Lexer(input);
+      const parser = new Parser(lexer);
+
+      const program = parser.parseProgram();
+      assert.notEqual(program, null);
+      assert.equal(1, program.statements.length);
+
+      let tests = [
+        'FOOBAR',
+      ];
+
+      const testLetStmt = (stmt, name) => {
+        assert.equal(stmt.tokenLiteral(), "FOOBAR");
+      };
+      tests.forEach((t, i) => {
+        const stmt = program.statements[i];
+        testLetStmt(stmt, t);
+      });
+    });
+
     it('should identify parse errors', function() {
       const input = `
 LET = 5
@@ -40,7 +64,7 @@ LET = 5
 
       const program = parser.parseProgram();
       assert.notEqual(program, null);
-      assert.equal(0, program.statements.length);
+      assert.equal(3, program.statements.length);
       assert.equal(parser.errors[0], 'expected next token to be IDENT, got =');
 
     });
