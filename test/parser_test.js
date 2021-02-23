@@ -55,6 +55,30 @@ LET FOOBAR = 818181
       });
     });
 
+    it('should parse integer literals', function() {
+      const input = `5
+`;
+      const lexer = new Lexer(input);
+      const parser = new Parser(lexer);
+
+      const program = parser.parseProgram();
+      assert.notEqual(program, null);
+      assert.equal(1, program.statements.length);
+
+      let tests = [
+        '5',
+      ];
+
+      const testIntegerStmt = (stmt, name) => {
+        assert.equal(stmt.tokenLiteral(), "5");
+      };
+      tests.forEach((t, i) => {
+        const stmt = program.statements[i];
+        console.log("THE STATEMENT", stmt);
+        testIntegerStmt(stmt, t);
+      });
+    });
+
     it('should identify parse errors', function() {
       const input = `
 LET = 5
