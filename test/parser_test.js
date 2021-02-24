@@ -79,16 +79,84 @@ LET FOOBAR = 818181
       });
     });
 
+    it('should parse prefix operators', function() {
+      const prefixTests = [
+        ["-5\n", "-", 5],
+      ];
+
+
+      for (const test of prefixTests) {
+        const lexer = new Lexer(test[0]);
+        const parser = new Parser(lexer);
+        const program = parser.parseProgram();
+
+        assert.equal(1, program.statements.length);
+        const stmt = program.statements[0];
+
+        const exp = stmt.expression;
+        assert.equal(exp.operator, test[1]);
+
+        const rightExp = exp.right;
+
+        assert.equal(rightExp.value, test[2]);
+        assert.equal(rightExp.tokenLiteral(), test[2]);
+      }
+    });
+
+    it('should parse infix operators', function() {
+      const infixTests = [
+        ["5+5\n", 5, "+", 5],
+        ["5-5\n", 5, "-", 5],
+        ["5*5\n", 5, "*", 5],
+        ["5/5\n", 5, "/", 5],
+        ["5<5\n", 5, "<", 5],
+        ["5>5\n", 5, ">", 5],
+      ];
+
+
+      for (const test of infixTests) {
+        const lexer = new Lexer(test[0]);
+        const parser = new Parser(lexer);
+        const program = parser.parseProgram();
+
+        assert.equal(1, program.statements.length);
+        const stmt = program.statements[0];
+
+        const exp = stmt.expression;
+        console.log("EXP", exp);
+        assert.equal(exp.left, test[1]);
+        assert.equal(exp.operator, test[2]);
+
+        const rightExp = exp.right;
+        assert.equal(rightExp.value, test[3]);
+        assert.equal(rightExp.tokenLiteral(), test[3]);
+      }
+    });
+
+    it('should parse operator precedence', function() {
+      const infixTests = [
+        ["-a * b\n", "((-a) * b)"],
+      ];
+
+      for (const test of infixTests) {
+        const lexer = new Lexer(test[0]);
+        const parser = new Parser(lexer);
+        const program = parser.parseProgram();
+
+        assert.equal(1, program.statements.length);
+        assert.equal(test[1], program.toString(), program.toString());
+      }
+    });
+
     it('should identify parse errors', function() {
-      const input = `
-LET = 5
+      const input = `LET = 5
 `;
       const lexer = new Lexer(input);
       const parser = new Parser(lexer);
 
       const program = parser.parseProgram();
       assert.notEqual(program, null);
-      assert.equal(3, program.statements.length);
+      assert.equal(2, program.statements.length);
       assert.equal(parser.errors[0], 'expected next token to be IDENT, got =');
 
     });

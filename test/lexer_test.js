@@ -15,6 +15,7 @@ describe('Lexer tests', function() {
         GOTO 40
         REM prints the result
         PRINT B
+        5 < 5
       `;
 
       const tests = [
@@ -61,6 +62,10 @@ describe('Lexer tests', function() {
         [token.NEWLINE, "\n"],
         [token.PRINT, "PRINT"],
         [token.IDENT, "B"],
+        [token.NEWLINE, "\n"],
+        [token.INT, "5"],
+        [token.LT, "<"],
+        [token.INT, "5"],
         [token.NEWLINE, "\n"],
         [token.EOF, ""],
       ];
