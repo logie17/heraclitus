@@ -148,6 +148,31 @@ LET FOOBAR = 818181
       }
     });
 
+    it('should parse bool literals', function() {
+      const input = `true
+false
+let FOO = true
+let BAR = false
+`;
+      const lexer = new Lexer(input);
+      const parser = new Parser(lexer);
+
+      const program = parser.parseProgram();
+      assert.notEqual(program, null);
+      assert.equal(10, program.statements.length);
+
+      let tests = [
+        'true', 'false', 'let',
+      ];
+
+      tests.forEach((t, i) => {
+        const stmt = program.statements[i];
+        console.log("STMT", stmt);
+        assert.equal(stmt.tokenLiteral(), t);
+        assert.equal(stmt.expression.value, t);
+      });
+    });
+
     it('should identify parse errors', function() {
       const input = `LET = 5
 `;
