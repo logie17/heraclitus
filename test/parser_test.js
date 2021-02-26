@@ -136,6 +136,12 @@ LET FOOBAR = 818181
     it('should parse operator precedence', function() {
       const infixTests = [
         ["-a * b\n", "((-a) * b)"],
+        ["!-a\n","(!(-a))"],
+        ["a+b+c\n","((a + b) + c)"],
+        ["a+b-c\n","((a + b) - c)"],
+        ["a*b*c\n","((a * b) * c)"],
+        ["a*b/c\n","((a * b) / c)"],
+        ["a+b/c\n","(a + (b / c))"],
       ];
 
       for (const test of infixTests) {
