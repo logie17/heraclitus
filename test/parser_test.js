@@ -4,6 +4,12 @@ const {Parser} = require('../lib/parser.js');
 
 describe('Parser tests', function() {
   describe('test let statements', function() {
+
+    const checkParseErrors = p => {
+      const errors = p.parseErrors();
+      console.log("Errors", errors);
+      assert.equal(0, errors.length, errors);
+    };
     it('should parse let statements', function() {
       const input = `LET x = 5
 LET y = 10
@@ -146,12 +152,14 @@ LET FOOBAR = 818181
         ["false\n", "false"],
         ["3 > 5 = false\n", "((3 > 5) = false)",],
         ["3 < 5 = true\n", "((3 < 5) = true)",],
+        ["1 + (2 + 3) + 4\n", "((1 + (2 + 3)) + 4)"],
       ];
 
       for (const test of infixTests) {
         const lexer = new Lexer(test[0]);
         const parser = new Parser(lexer);
         const program = parser.parseProgram();
+        checkParseErrors(parser);
         assert.equal(1, program.statements.length);
         assert.equal(test[1], program.toString(), program.toString());
       }
