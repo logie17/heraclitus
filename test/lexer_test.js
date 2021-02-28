@@ -16,6 +16,9 @@ describe('Lexer tests', function() {
         REM prints the result
         PRINT B
         5 < 5
+        IF Z THEN
+          B
+        END IF
       `;
 
       const tests = [
@@ -66,6 +69,14 @@ describe('Lexer tests', function() {
         [token.INT, "5"],
         [token.LT, "<"],
         [token.INT, "5"],
+        [token.NEWLINE, "\n"],
+        [token.IF, "IF"],
+        [token.IDENT, "Z"],
+        [token.THEN, "THEN"],
+        [token.NEWLINE, "\n"],
+        [token.IDENT, "B"],
+        [token.NEWLINE, "\n"],
+        [token.IDENT, "END_IF"],
         [token.NEWLINE, "\n"],
         [token.EOF, ""],
       ];
