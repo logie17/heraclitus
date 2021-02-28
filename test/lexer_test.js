@@ -19,7 +19,7 @@ describe('Lexer tests', function() {
         IF Z THEN
           B
         END IF
-      `;
+`;
 
       const tests = [
         [token.REM, "REM"],
@@ -77,7 +77,6 @@ describe('Lexer tests', function() {
         [token.IDENT, "B"],
         [token.NEWLINE, "\n"],
         [token.IDENT, "END_IF"],
-        [token.NEWLINE, "\n"],
         [token.EOF, ""],
       ];
 
