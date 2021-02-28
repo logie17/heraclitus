@@ -165,6 +165,38 @@ LET FOOBAR = 818181
       }
     });
 
+    it('should parse if statements', function() {
+      const input = `IF X < Y THEN Z\n`;
+      const lexer = new Lexer(input);
+      const parser = new Parser(lexer);
+      const program = parser.parseProgram();
+      checkParseErrors(parser);
+      assert.equal(1, program.statements.length);
+      const stmt = program.statements[0];
+      const exp = stmt.expression;
+      assert.equal(exp.condition.operator, "<");
+      assert.equal(exp.condition.left.toString(), "X");
+      assert.equal(exp.condition.right.toString(), "Y");
+      assert.equal(exp.consequence.toString(), "Z");
+    });
+
+    it('should parse if statements multi-line', function() {
+      const input = `IF X < Y THEN
+         Z
+      END IF`;
+      const lexer = new Lexer(input);
+      const parser = new Parser(lexer);
+      const program = parser.parseProgram();
+      checkParseErrors(parser);
+      assert.equal(1, program.statements.length);
+      const stmt = program.statements[0];
+      const exp = stmt.expression;
+      assert.equal(exp.condition.operator, "<");
+      assert.equal(exp.condition.left.toString(), "X");
+      assert.equal(exp.condition.right.toString(), "Y");
+      assert.equal(exp.consequence.toString(), "Z");
+    });
+
     it('should parse bool literals', function() {
       const input = `true
 false
