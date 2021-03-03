@@ -19,6 +19,9 @@ describe('Lexer tests', function() {
         IF Z THEN
           B
         END IF
+        SUB FOO(x,y)
+          C
+        END SUB
 `;
 
       const tests = [
@@ -77,6 +80,18 @@ describe('Lexer tests', function() {
         [token.IDENT, "B"],
         [token.NEWLINE, "\n"],
         [token.IDENT, "END_IF"],
+        [token.NEWLINE, "\n"],
+        [token.SUB, "SUB"],
+        [token.IDENT, "FOO"],
+        [token.LPAREN, "("],
+        [token.IDENT, "x"],
+        [token.COMMA, ","],
+        [token.IDENT, "y"],
+        [token.RPAREN, ")"],
+        [token.NEWLINE, "\n"],
+        [token.IDENT, "C"],
+        [token.NEWLINE, "\n"],
+        [token.IDENT, "END_SUB"],
         [token.EOF, ""],
       ];
 
