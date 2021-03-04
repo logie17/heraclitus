@@ -217,6 +217,21 @@ LET FOOBAR = 818181
       assert.equal(exp.alternative.toString(), "A");
     });
 
+    it('should parse SUB', function() {
+      const input = `SUB FOO (x, y)
+        FOO
+      END SUB
+`;
+      const lexer = new Lexer(input);
+      const parser = new Parser(lexer);
+      const program = parser.parseProgram();
+      checkParseErrors(parser);
+      assert.equal(1, program.statements.length);
+      const stmt = program.statements[0];
+      const exp = stmt.expression;
+      assert.equal(exp.toString(), "SUB(x, y) FOO END SUB");
+    });
+
     it('should parse bool literals', function() {
       const input = `true
 false
