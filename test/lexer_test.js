@@ -22,6 +22,7 @@ describe('Lexer tests', function() {
         SUB FOO(x,y)
           C
         END SUB
+        CALL FOO(1,2)
 `;
 
       const tests = [
@@ -92,6 +93,14 @@ describe('Lexer tests', function() {
         [token.IDENT, "C"],
         [token.NEWLINE, "\n"],
         [token.IDENT, "END_SUB"],
+        [token.NEWLINE, "\n"],
+        [token.CALL, "CALL"],
+        [token.IDENT, "FOO"],
+        [token.LPAREN, "("],
+        [token.INT, "1"],
+        [token.COMMA, ","],
+        [token.INT, "2"],
+        [token.RPAREN, ")"],
         [token.EOF, ""],
       ];
 
