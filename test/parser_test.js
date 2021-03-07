@@ -10,30 +10,25 @@ describe('Parser tests', function() {
       console.log("Errors", errors);
       assert.equal(0, errors.length, errors);
     };
+
     it('should parse let statements', function() {
-      const input = `LET x = 5
-LET y = 10
-LET FOOBAR = 818181
-`;
-      const lexer = new Lexer(input);
-      const parser = new Parser(lexer);
-
-      const program = parser.parseProgram();
-      assert.notEqual(program, null);
-      assert.equal(6, program.statements.length);
-
-      let tests = [
-        "x", "y", "FOOBAR",
+      const tests = [
+        ["LET x = 5\n", "x", 5],
+        ["LET y = true\n", "y", "true"],
+        ["LET foobar = y\n", "foobar", "y"],
       ];
 
-      const testLetStmt = (stmt, name) => {
-        console.log("STMT", stmt);
-        // assert.equal(stmt.tokenLiteral(), "LET");
-        // assert.equal(stmt.name.value, name);
-      };
       tests.forEach((t, i) => {
-        const stmt = program.statements[i];
-        // testLetStmt(stmt, t);
+        const lexer = new Lexer(t[0]);
+        const parser = new Parser(lexer);
+
+        const program = parser.parseProgram();
+        checkParseErrors(parser);
+
+        const stmt = program.statements[0];
+        assert.equal(stmt.token.literal, "LET");
+        assert.equal(stmt.expression.name, t[1]);
+        assert.equal(stmt.expression.value, t[2]);
       });
 
     });
@@ -278,7 +273,6 @@ let BAR = false
 
       const program = parser.parseProgram();
       assert.notEqual(program, null);
-      assert.equal(2, program.statements.length);
       assert.equal(parser.errors[0], 'expected next token to be IDENT, got =');
 
     });
