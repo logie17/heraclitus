@@ -3,6 +3,7 @@ const url = require('url');
 const express = require('express');
 const WebSocket = require('ws');
 const {token, Lexer} = require('../lib/lexer.js');
+const {Parser} = require('../lib/parser.js');
 
 const app = express();
 const server = http.createServer(app);
@@ -39,15 +40,22 @@ wss.on('connection', async (ws, req) => {
 
   ws.on('message', async message => {
     const { action, data } = JSON.parse(message);
-    if (action == 'compile') {
+    if (action == 'lex') {
       const program = data;
-      console.log("THE PROGRAM", program);
       const lexer = new Lexer(program);
       for (let tok = lexer.nextToken(); tok.type !== token.EOF; tok = lexer.nextToken()) {
-        console.log("TOKEN!!", tok);
         ws.broadcastAll(JSON.stringify({ action: 'lex-results', data: { tok }, connectionId }));
       }
-    } else if (action == 'reinitialize') {
+
+    } else if ( action === 'parse') {
+      const lexer = new Lexer(data);
+      const parser = new Parser(lexer);
+      const program = parser.parseProgram();
+
+      for (let tok = lexer.nextToken(); tok.type !== token.EOF; tok = lexer.nextToken()) {
+        ws.broadcastAll(JSON.stringify({ action: 'lex-results', data: { tok }, connectionId }));
+      }
+    } else if (action === 'reinitialize') {
       // the client asked to reinitialize so abide
       await initialize();
     }
