@@ -48,6 +48,7 @@ wss.on('connection', async (ws, req) => {
       }
 
     } else if ( action === 'parse') {
+      console.log("Parsing", data);
       const lexer = new Lexer(data);
       const parser = new Parser(lexer);
       const program = parser.parseProgram();

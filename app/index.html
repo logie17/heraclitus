@@ -12,10 +12,13 @@
   }
   #results {
     border: 1px solid blue;
+    min-height: 500px;
   }
 </style>
 
 <h1>Repl</h1>
+<button id="lex" onclick="lex()">lex</button>
+<button id="parse" onclick="parse()">parse</button>
 <button id="compile" onclick="compile()">compile</button>
 <div id="program" contenteditable></div>
 <div id="results"></div>
@@ -33,6 +36,16 @@ document.addEventListener("DOMContentLoaded", _ => {
     const program = programEl.innerText || '';
     broadcastChange('compile', program);
   };
+
+  window.lex = _ => {
+    const program = programEl.innerText || '';
+    broadcastChange('lex', program);
+  }
+
+  window.parse = _ => {
+    const program = programEl.innerText || '';
+    broadcastChange('parse', program);
+  }
 
   socket.addEventListener('message', (msg) => {
     const { action, data } = JSON.parse(msg.data);
