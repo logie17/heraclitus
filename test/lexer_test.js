@@ -23,6 +23,8 @@ describe('Lexer tests', function() {
           C
         END SUB
         CALL FOO(1,2)
+        TRUE
+        FALSE
 `;
 
       const tests = [
@@ -101,6 +103,10 @@ describe('Lexer tests', function() {
         [token.COMMA, ","],
         [token.INT, "2"],
         [token.RPAREN, ")"],
+        [token.NEWLINE, "\n"],
+        [token.TRUE, "TRUE"],
+        [token.NEWLINE, "\n"],
+        [token.FALSE, "FALSE"],
         [token.EOF, ""],
       ];
 
