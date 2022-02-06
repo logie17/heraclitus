@@ -14,7 +14,7 @@ describe('Parser tests', function() {
     it('should parse let statements', function() {
       const tests = [
         ["LET x = 5\n", "x", 5],
-        ["LET y = true\n", "y", "true"],
+        ["LET y = TRUE\n", "y", "TRUE"],
         ["LET foobar = y\n", "foobar", "y"],
       ];
 
@@ -143,10 +143,10 @@ describe('Parser tests', function() {
         ["a*b*c\n","((a * b) * c)"],
         ["a*b/c\n","((a * b) / c)"],
         ["a+b/c\n","(a + (b / c))"],
-        ["true\n","true"],
-        ["false\n", "false"],
-        ["3 > 5 = false\n", "((3 > 5) = false)",],
-        ["3 < 5 = true\n", "((3 < 5) = true)",],
+        ["TRUE\n","TRUE"],
+        ["FALSE\n", "FALSE"],
+        ["3 > 5 = FALSE\n", "((3 > 5) = FALSE)",],
+        ["3 < 5 = TRUE\n", "((3 < 5) = TRUE)",],
         ["1 + (2 + 3) + 4\n", "((1 + (2 + 3)) + 4)"],
       ];
 
@@ -241,27 +241,27 @@ describe('Parser tests', function() {
     });
 
     it('should parse bool literals', function() {
-      const input = `true
-false
-let FOO = true
-let BAR = false
+      const input = `TRUE
+FALSE
+LET FOO = TRUE
+LET BAR = FALSE
 `;
       const lexer = new Lexer(input);
       const parser = new Parser(lexer);
 
       const program = parser.parseProgram();
       assert.notEqual(program, null);
-      assert.equal(6, program.statements.length);
+      assert.equal(4, program.statements.length);
 
       let tests = [
-        'true', 'false', 'let'
+        ['TRUE', true],
+        ['FALSE', false],
       ];
 
       tests.forEach((t, i) => {
         const stmt = program.statements[i];
-        console.log("STMT", stmt);
-        assert.equal(stmt.tokenLiteral(), t);
-        assert.equal(stmt.expression.value, t);
+        assert.equal(stmt.tokenLiteral(), t[0]);
+        assert.equal(stmt.expression.value, t[1]);
       });
     });
 
