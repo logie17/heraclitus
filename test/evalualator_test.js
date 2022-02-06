@@ -20,5 +20,40 @@ describe('Evaluator tests', function() {
       assert.equal(result.value, t[1]);
     });
   });
+  describe('test boolean expression', function() {
+    const tests = [
+      ["TRUE\n", true],
+      ["FALSE\n", false],
+    ];
+
+    tests.forEach((t, i) => {
+      const lexer = new Lexer(t[0]);
+      const parser = new Parser(lexer);
+
+      const program = parser.parseProgram();
+      const interpreter = new Interpreter();
+      const result = interpreter.eval(program)
+      assert.equal(result.value, t[1]);
+    });
+  });
+  describe('test bang expression', function() {
+    const tests = [
+      ["!TRUE\n", false],
+      ["!FALSE\n", true],
+      ["!!TRUE\n", true],
+      ["!!FALSE\n", false],
+      ["!4\n", false],
+    ];
+
+    tests.forEach((t, i) => {
+      const lexer = new Lexer(t[0]);
+      const parser = new Parser(lexer);
+
+      const program = parser.parseProgram();
+      const interpreter = new Interpreter();
+      const result = interpreter.eval(program)
+      assert.equal(result.value, t[1]);
+    });
+  });
 });
            
