@@ -55,5 +55,23 @@ describe('Evaluator tests', function() {
       assert.equal(result.value, t[1]);
     });
   });
+  describe('test negation prefix', function() {
+    const tests = [
+      ["5\n", 5],
+      ["10\n", 10],
+      ["-5\n", -5],
+      ["-10\n", -10],
+    ];
+
+    tests.forEach((t, i) => {
+      const lexer = new Lexer(t[0]);
+      const parser = new Parser(lexer);
+
+      const program = parser.parseProgram();
+      const interpreter = new Interpreter();
+      const result = interpreter.eval(program)
+      assert.equal(result.value, t[1]);
+    });
+  });
 });
            
