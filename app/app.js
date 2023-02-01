@@ -52,10 +52,8 @@ wss.on('connection', async (ws, req) => {
       const lexer = new Lexer(data);
       const parser = new Parser(lexer);
       const program = parser.parseProgram();
+      ws.broadcastAll(JSON.stringify({ action: 'parse-results', data: { statements: program.statements }, connectionId }));
 
-      for (let tok = lexer.nextToken(); tok.type !== token.EOF; tok = lexer.nextToken()) {
-        ws.broadcastAll(JSON.stringify({ action: 'lex-results', data: { tok }, connectionId }));
-      }
     } else if (action === 'reinitialize') {
       // the client asked to reinitialize so abide
       await initialize();
