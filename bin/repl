@@ -1,0 +1,30 @@
+#! /usr/bin/env node
+
+const readline = require('readline');
+const {Lexer} = require('../lib/lexer.js');
+const {Parser} = require('../lib/parser.js');
+const {Interpreter} = require('../lib/interpreter');
+
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
+
+const promptLoop = () => {
+  rl.question('Supply an heraclitus expression: ', (expression) => {
+    if (expression.toLowerCase == 'exit') {
+      rl.close();
+    } else {
+      console.log(`You entered: ${expression}`);
+      const lexer = new Lexer(expression + "\n");
+      const parser = new Parser(lexer);
+      const program = parser.parseProgram();
+      const interpreter = new Interpreter();
+      const result = interpreter.eval(program)
+      console.log(result.inspect());
+    }
+    promptLoop();
+  });
+};
+
+promptLoop();
