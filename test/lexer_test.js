@@ -8,6 +8,7 @@ describe('Lexer tests', function() {
         PRINT " factorial of:"
         INPUT A
         LET B = 1
+        1 <> 1
         REM beginning of the loop
         IF A <= 1 THEN 80
         LET B = B * A
@@ -39,6 +40,10 @@ describe('Lexer tests', function() {
         [token.LET, "LET"],
         [token.IDENT, "B"],
         [token.ASSIGN_OR_EQ, "="],
+        [token.INT, "1"],
+        [token.NEWLINE, "\n"],
+        [token.INT, "1"],
+        [token.NOT_EQ, "<>"],
         [token.INT, "1"],
         [token.NEWLINE, "\n"],
         [token.REM, "REM"],
