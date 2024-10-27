@@ -21,7 +21,7 @@ describe('Lexer tests', function() {
           B
         END IF
         SUB FOO(x,y)
-          C
+          RETURN C
         END SUB
         CALL FOO(1,2)
         TRUE
@@ -97,6 +97,7 @@ describe('Lexer tests', function() {
         [token.IDENT, "y"],
         [token.RPAREN, ")"],
         [token.NEWLINE, "\n"],
+        [token.RETURN, "RETURN"],
         [token.IDENT, "C"],
         [token.NEWLINE, "\n"],
         [token.END_SUB, "END SUB"],
