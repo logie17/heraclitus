@@ -214,7 +214,7 @@ describe('Parser tests', function() {
 
     it('should parse SUB', function() {
       const input = `SUB FOO (x, y)
-        FOO
+        RETURN FOO
       END SUB
 `;
       const lexer = new Lexer(input);
@@ -224,7 +224,7 @@ describe('Parser tests', function() {
       assert.equal(1, program.statements.length);
       const stmt = program.statements[0];
       const exp = stmt.expression;
-      assert.equal(exp.toString(), "SUB(x, y) FOO END SUB");
+      assert.equal(exp.toString(), "SUB(x, y) RETURN FOO END SUB");
     });
 
     it('should parse CALL', function() {
