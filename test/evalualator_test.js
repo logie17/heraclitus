@@ -91,5 +91,20 @@ describe('Evaluator tests', function() {
       assert.equal(result.value, t[1]);
     });
   });
+
+  describe('error handling', function () {
+    const tests = [
+      ["2 + TRUE\n", "type mismatch INTEGER + BOOLEAN"],
+    ];
+
+    tests.forEach(t => {
+      const lexer = new Lexer(t[0]);
+      const parser = new Parser(lexer);
+
+      const program = parser.parseProgram();
+      const interpreter = new Interpreter();
+      const result = interpreter.eval(program)
+      assert.equal(result.message, t[1]);
+    });
+  });
 });
-           
