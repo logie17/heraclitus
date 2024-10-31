@@ -94,7 +94,8 @@ describe('Evaluator tests', function() {
 
   describe('error handling', function () {
     const tests = [
-      ["2 + TRUE\n", "type mismatch INTEGER + BOOLEAN"],
+      ["2 + TRUE\n", "type mismatch: INTEGER + BOOLEAN"],
+      ["TRUE + TRUE\n", "unknown operator: BOOLEAN + BOOLEAN"],
     ];
 
     tests.forEach(t => {
